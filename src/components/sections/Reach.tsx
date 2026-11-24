@@ -1,14 +1,14 @@
 import { reach } from "@/content";
 import { worldMap } from "@/data/world-map";
-import { Container, H2, Section, SectionLabel } from "../ui/primitives";
+import { Container, H2, Section, SectionLabel, type SectionProps } from "../ui/primitives";
 
-export function Reach() {
+export function Reach({ index }: SectionProps) {
   const lagos = worldMap.markers.find((m) => m.name === "Nigeria")!;
   const pct = (v: number, of: number) => `${(v / of) * 100}%`;
   return (
     <Section id="reach" theme="light" labelledBy="reach-heading">
       <Container className="py-24 lg:py-32">
-        <SectionLabel index="07">Reach</SectionLabel>
+        <SectionLabel index={index}>Reach</SectionLabel>
         <div className="mt-6 grid gap-6 lg:grid-cols-12 lg:items-end lg:gap-8">
           <H2 id="reach-heading" className="lg:col-span-7">
             {reach.heading}
@@ -60,12 +60,12 @@ export function Reach() {
                 <li
                   key={c}
                   className={
-                    i < 3
+                    i < reach.leading
                       ? "inline-flex items-center gap-2 rounded-full bg-ink px-4 py-2 text-[0.9375rem] font-semibold text-paper"
                       : "inline-flex items-center gap-2 rounded-full border border-line px-4 py-2 text-[0.9375rem] font-medium"
                   }
                 >
-                  <span className={`size-1.5 rounded-full ${i < 3 ? "bg-green" : "bg-green-deep"}`} aria-hidden="true" />
+                  <span className={`size-1.5 rounded-full ${i < reach.leading ? "bg-green" : "bg-green-deep"}`} aria-hidden="true" />
                   {c}
                 </li>
               ))}

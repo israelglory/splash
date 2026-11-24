@@ -25,6 +25,8 @@ export const site = {
   location: "Lagos, Nigeria",
   ogImage: "/images/og-image.png",
   copyright: "© 2026 Splash Software Technologies. All rights reserved.",
+  registration: "Registered with the Corporate Affairs Commission, Nigeria. BN 9961393.",
+  registeredAddress: "66B, Osholake Street, Ebute Meta, Lagos Mainland, Lagos State, Nigeria",
 } as const;
 
 // TODO: replace with the real profile URLs.
@@ -35,15 +37,33 @@ export const socials = [
   { id: "tiktok", label: "TikTok", href: "https://www.tiktok.com/" },
 ] as const;
 
+/** Main navigation. "Products" is a dropdown built from `productList` below. */
 export const nav = {
+  products: { label: "Products", allLabel: "All products", allHref: "/#products" },
   links: [
-    { label: "Products", href: "/#products" },
-    { label: "About", href: "/#about" },
-    { label: "Team", href: "/#team" },
-    { label: "Launchpad", href: "/#launchpad" },
-    { label: "Contact", href: "/#contact" },
+    { label: "About", href: "/about/" },
+    { label: "Launchpad", href: "/launchpad/" },
+    { label: "Contact", href: "/contact/" },
   ],
   cta: { label: "See our apps", href: "/#products" },
+} as const;
+
+/** Title and description for each page (used for <title>, search results and link previews). */
+export const pages = {
+  about: {
+    title: "About",
+    description:
+      "Splash Software Technologies builds consumer products in Lagos that make everyday life easier. How we build, where our apps are used and the team behind them.",
+  },
+  launchpad: {
+    title: "Splash Launchpad",
+    description:
+      "Splash Launchpad is a yearly hackathon where builders create consumer apps, with mentorship, AI and cloud credits and design support. First edition: 2027.",
+  },
+  contact: {
+    title: "Contact",
+    description: "Work with Splash Software Technologies. Investors, partners, brands and press can reach the founders here.",
+  },
 } as const;
 
 // ---------------------------------------------------------------------------
@@ -55,7 +75,7 @@ export type Stat = {
   decimals?: number;
   prefix?: string;
   suffix?: string;
-  /** Use thousands separators, e.g. 27,000 */
+  /** Use thousands separators, e.g. 32,000 */
   grouped?: boolean;
   label: string;
 };
@@ -67,9 +87,9 @@ export const stats = {
   heading: "Early, and growing fast.",
   items: [
     { value: 2, label: "apps live" },
-    { value: 27000, grouped: true, suffix: "+", label: "downloads" },
+    { value: 32000, grouped: true, suffix: "+", label: "downloads" },
     { value: 1000, grouped: true, suffix: "+", label: "downloads a day" },
-    { value: 10, prefix: "~", suffix: "K", label: "monthly active users" },
+    { value: 2.8, decimals: 1, suffix: "K", label: "daily active users" },
     { value: 4.8, decimals: 1, label: "App Store rating" },
     { value: 10, suffix: "+", label: "countries" },
   ] satisfies Stat[],
@@ -86,8 +106,8 @@ export const hero = {
   subheadline:
     "We find the everyday frustrations people deal with and build delightful products that fix them.",
   primary: { label: "Explore our products", href: "/#products" },
-  secondary: { label: "Meet the team", href: "/#team" },
-  proof: "2 apps live. 27,000+ downloads in 10 weeks. Zero ad spend.",
+  secondary: { label: "Meet the team", href: "/about/#team" },
+  proof: "2 apps live. 32,000+ downloads. Zero ad spend.",
 } as const;
 
 // ---------------------------------------------------------------------------
@@ -95,7 +115,8 @@ export const hero = {
 // ---------------------------------------------------------------------------
 
 export type Product = {
-  id: "statushd" | "stitch";
+  /** Short lowercase id, also used as the homepage section id if the product has a spotlight. */
+  id: string;
   name: string;
   icon: string;
   /** One line: the everyday problem, phrased as what the app lets you do. */
@@ -104,23 +125,29 @@ export type Product = {
   status: string;
   platforms: string;
   siteUrl: string;
+  /**
+   * Where the Products menu links. A homepage spotlight ("/#statushd") if the
+   * product has one, otherwise leave it out and the menu links to siteUrl.
+   */
+  href?: string;
   /** TODO: leave empty until the store listing URL is confirmed; buttons fall back to siteUrl. */
   appStoreUrl: string;
   playStoreUrl: string;
 };
 
-export const products: Record<Product["id"], Product> = {
+export const products = {
   statushd: {
     id: "statushd",
     name: "StatusHD",
-    icon: "/images/statushd-icon.png",
+    icon: "/images/statushd-icon.jpg",
     promise: "Post photos and videos in full quality.",
     tagline: "Full quality. Zero blur. No watermark.",
     status: "Live",
     platforms: "Live on iOS and Android",
     siteUrl: "https://statushd.gloryolaifa.xyz",
-    appStoreUrl: "", // TODO
-    playStoreUrl: "", // TODO
+    href: "/#statushd",
+    appStoreUrl: "https://apps.apple.com/us/app/statushd-for-whatsappp/id6801856650",
+    playStoreUrl: "https://play.google.com/store/apps/details?id=xyz.gloryolaifa.statushd",
   },
   stitch: {
     id: "stitch",
@@ -131,10 +158,18 @@ export const products: Record<Product["id"], Product> = {
     status: "AI editing now live",
     platforms: "Live on iOS and Android",
     siteUrl: "https://stitch.gloryolaifa.xyz",
-    appStoreUrl: "", // TODO
-    playStoreUrl: "", // TODO
+    href: "/#stitch",
+    appStoreUrl: "https://apps.apple.com/us/app/stitch-free-video-editor/id6818655991",
+    playStoreUrl: "https://play.google.com/store/apps/details?id=xyz.olaifaglory.stitch",
   },
-};
+} satisfies Record<string, Product>;
+
+/**
+ * Every live product, in display order. To launch a new app, add it to
+ * `products` above and list it here: it then appears in the Products menu,
+ * the product cards, the footer and the final call to action.
+ */
+export const productList: Product[] = [products.statushd, products.stitch];
 
 export const productsSection = {
   heading: "Products people use every day.",
@@ -146,12 +181,21 @@ export const productsSection = {
   },
 } as const;
 
+/** Phone screenshots, exported at 720px wide. Any 9:19.5-ish screen works. */
 export const screenshots = {
-  statushdHome: { src: "/images/statushd-home.png", alt: "StatusHD home screen with a photo ready to send in full quality" },
-  statushdOptimize: { src: "/images/statushd-optimize.png", alt: "StatusHD optimizing a video before it is posted" },
-  stitchAiEdit: { src: "/images/stitch-ai-edit.png", alt: "Stitch AI editing screen with a typed edit request" },
-  stitchCaptions: { src: "/images/stitch-captions.png", alt: "Stitch adding automatic captions to a video" },
-  stitchKeyframes: { src: "/images/stitch-keyframes.png", alt: "Stitch timeline with keyframes on a clip" },
+  statushdVideo: {
+    src: "/images/statushd-optimize-video.jpg",
+    alt: "StatusHD optimizing a 42 MB video for WhatsApp Status, 93% done",
+    // Android screenshot: no camera cutout drawn over it.
+    cutout: false,
+  },
+  statushdPhoto: {
+    src: "/images/statushd-optimize-photo.jpg",
+    alt: "StatusHD optimizing a 13.1 MB photo, with its original resolution and file size",
+  },
+  stitchEditor: { src: "/images/stitch-editor.jpg", alt: "Stitch editor with a video preview above the clip timeline" },
+  stitchCaptions: { src: "/images/stitch-captions.jpg", alt: "Stitch auto captions panel over a video" },
+  stitchExport: { src: "/images/stitch-export.jpg", alt: "Stitch export settings for resolution, frame rate and quality" },
 } as const;
 
 // ---------------------------------------------------------------------------
@@ -165,8 +209,8 @@ export const statushdSpotlight = {
     "Photos and videos posted to WhatsApp Status often come out blurry. StatusHD fixes that, so what you post looks the way you shot it.",
   stepsHeading: "How it works",
   steps: [
-    { title: "Pick", body: "Choose any photo or video from your phone." },
-    { title: "Optimize", body: "StatusHD optimizes it in seconds." },
+    { title: "Pick", body: "Choose a photo or video from your gallery. Large files and long clips are fine." },
+    { title: "Optimize", body: "StatusHD optimizes it on your phone, in seconds." },
     { title: "Post", body: "It arrives ready to post. A near-HD option is there as a backup." },
   ],
   comparison: {
@@ -176,7 +220,7 @@ export const statushdSpotlight = {
   },
   features: [
     { title: "No watermark", body: "Never, not even on the free plan." },
-    { title: "Delivered ready to post", body: "No extra steps once it arrives." },
+    { title: "Delivered ready to post", body: "Post it in one tap, or have it delivered in full quality to your own chat." },
     { title: "Memes feed", badge: "Beta", body: "Funny content to like, save and share." },
     { title: "AI enhancer", badge: "Coming soon", body: "An AI photo and video enhancer is next." },
   ],
@@ -208,14 +252,14 @@ export const stitchSpotlight = {
   editor: {
     title: "A full editor too",
     body: "When you want hands-on control, everything is there.",
-    tools: ["Timeline", "Split", "Speed", "Transitions", "Keyframes", "Auto captions", "Music"],
+    tools: ["Timeline", "Split", "Speed", "Transitions", "Keyframes", "Auto captions", "Music", "Export up to 4K"],
   },
   features: [
     { title: "AI editing", body: "Describe the edit, Stitch does the work." },
     { title: "Auto captions", body: "Captions added for you, automatically." },
     { title: "Keyframes", body: "Animate any clip with precise control." },
     { title: "Transitions", body: "Move smoothly from one clip to the next." },
-    { title: "Music", body: "Add a soundtrack that fits." },
+    { title: "Music and voiceover", body: "Add music and voiceover, balanced against the original audio." },
     { title: "Works everywhere", body: "On iPhone, iPad and Android." },
   ],
   downloadLine: "Try AI editing free.",
@@ -236,6 +280,13 @@ export const about = {
   quoteAttribution: "Our mission",
 } as const;
 
+/** Short version of the About story shown on the homepage. */
+export const aboutTeaser = {
+  heading: "Everyday problems deserve better solutions.",
+  body: "Most people don’t need more complicated apps. They need everyday things to just work. That’s what Splash builds.",
+  link: { label: "More about Splash", href: "/about/" },
+} as const;
+
 export const principles = {
   heading: "How we build.",
   items: [
@@ -248,10 +299,11 @@ export const principles = {
 
 export const reach = {
   heading: "Made in Lagos. Used around the world.",
-  caption: "People in 10+ countries use our apps, led by Malaysia, Nigeria and Indonesia.",
+  caption: "People in 10+ countries use our apps, led by Malaysia, the United States, Indonesia and Nigeria.",
   hqLabel: "Lagos, home of Splash",
-  /** Shown as chips. Order matters: leading countries first. Map highlights come from src/data/world-map.ts. */
-  countries: ["Malaysia", "Nigeria", "Indonesia", "United States", "Tanzania", "Sri Lanka", "Uganda"],
+  /** Shown as chips. Leading countries first; the first `leading` chips are emphasised. Map highlights come from src/data/world-map.ts. */
+  countries: ["Malaysia", "United States", "Indonesia", "Nigeria", "Tanzania", "Sri Lanka", "Uganda"],
+  leading: 4,
   moreLabel: "and more",
 } as const;
 
@@ -343,28 +395,23 @@ export const workWithUs = {
 
 export const finalCta = {
   heading: "Try what we’re building.",
-  buttons: [
-    { label: "Get StatusHD", product: "statushd" },
-    { label: "Get Stitch", product: "stitch" },
-  ],
+  /** One button per product in productList: "Get StatusHD", "Get Stitch", ... */
+  buttonPrefix: "Get",
 } as const;
 
 export const footer = {
   columns: [
     {
       title: "Products",
-      links: [
-        { label: "StatusHD", href: products.statushd.siteUrl, external: true },
-        { label: "Stitch", href: products.stitch.siteUrl, external: true },
-      ],
+      links: productList.map((p) => ({ label: p.name, href: p.siteUrl, external: true })),
     },
     {
       title: "Company",
       links: [
-        { label: "About", href: "/#about" },
-        { label: "Team", href: "/#team" },
-        { label: "Launchpad", href: "/#launchpad" },
-        { label: "Contact", href: "/#contact" },
+        { label: "About", href: "/about/" },
+        { label: "Team", href: "/about/#team" },
+        { label: "Launchpad", href: "/launchpad/" },
+        { label: "Contact", href: "/contact/" },
       ],
     },
     {

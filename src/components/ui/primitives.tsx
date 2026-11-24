@@ -28,10 +28,14 @@ export function Section({
 }
 
 /** Numbered label that opens most sections, e.g. "03  Products". */
-export function SectionLabel({ index, children }: { index: string; children: ReactNode }) {
+export function SectionLabel({ index, children }: { index?: string; children: ReactNode }) {
   return (
     <p className="flex items-center gap-3 text-sm font-medium text-soft" data-reveal>
-      <span className="font-display font-bold tabular-nums text-accent">{index}</span>
+      {index ? (
+        <span className="font-display font-bold tabular-nums text-accent">{index}</span>
+      ) : (
+        <span className="size-1.5 rounded-full bg-accent" aria-hidden="true" />
+      )}
       <span className="h-px w-8 bg-line" aria-hidden="true" />
       <span>{children}</span>
     </p>
@@ -63,17 +67,38 @@ export function Badge({ children, tone = "line" }: { children: ReactNode; tone?:
   );
 }
 
-export function H2({ id, children, className = "" }: { id?: string; children: ReactNode; className?: string }) {
+/** Section heading. Pass level={1} when the section opens its own page. */
+export function H2({
+  id,
+  level = 2,
+  children,
+  className = "",
+}: {
+  id?: string;
+  level?: 1 | 2;
+  children: ReactNode;
+  className?: string;
+}) {
+  const Tag = level === 1 ? "h1" : "h2";
   return (
-    <h2
+    <Tag
       id={id}
-      data-reveal
+      // A page's own h1 is visible straight away; only section headings animate in.
+      data-reveal={level === 2 ? true : undefined}
       className={`text-[clamp(2.25rem,1.35rem+3.6vw,4.25rem)] leading-[1.02] font-bold tracking-[-0.035em] ${className}`}
     >
       {children}
-    </h2>
+    </Tag>
   );
 }
+
+/** Props shared by sections that can appear on more than one page. */
+export type SectionProps = {
+  /** Numbered label, e.g. "02". Leave out for a plain label. */
+  index?: string;
+  /** Set when the section is the first thing on its own page, so its heading becomes the page's h1. */
+  asPage?: boolean;
+};
 
 type ButtonProps = ComponentProps<"a"> & { variant?: "primary" | "secondary"; arrow?: boolean };
 

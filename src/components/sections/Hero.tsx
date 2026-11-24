@@ -51,13 +51,14 @@ export function Hero() {
 
 function HeroPhone({ product, offset }: { product: "statushd" | "stitch"; offset?: boolean }) {
   const p = products[product];
-  const shot = product === "statushd" ? screenshots.statushdHome : screenshots.stitchAiEdit;
+  const shot = product === "statushd" ? screenshots.statushdVideo : screenshots.stitchEditor;
   return (
     <figure className={`flex w-[clamp(140px,41vw,232px)] flex-col ${offset ? "mt-10 sm:mt-14" : ""}`}>
       <Phone
         src={shot.src}
         alt={shot.alt}
         variant={product}
+        cutout={!("cutout" in shot) || shot.cutout}
         priority
         className={offset ? "animate-float-late" : "animate-float"}
       />

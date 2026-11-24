@@ -82,13 +82,13 @@ export function StitchPromptDemo() {
 
       <div className="relative flex justify-center md:justify-start" aria-hidden="true">
         <Phone
-          src={screenshots.stitchKeyframes.src}
+          src={screenshots.stitchExport.src}
           alt=""
           variant="stitch"
           className="absolute top-[8%] right-[4%] hidden w-[46%] max-w-[230px] rotate-[4deg] opacity-90 sm:block"
         />
         <Phone
-          src={screenshots.stitchAiEdit.src}
+          src={screenshots.stitchCaptions.src}
           alt=""
           variant="stitch"
           className="relative w-[64%] max-w-[290px] animate-float sm:w-[54%]"

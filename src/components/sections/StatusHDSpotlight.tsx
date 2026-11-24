@@ -43,14 +43,15 @@ export function StatusHDSpotlight() {
           <div className="lg:col-span-6" data-reveal>
             <div className="relative mx-auto flex max-w-[500px] justify-center py-4">
               <Phone
-                src={screenshots.statushdHome.src}
-                alt={screenshots.statushdHome.alt}
+                src={screenshots.statushdVideo.src}
+                alt={screenshots.statushdVideo.alt}
+                cutout={screenshots.statushdVideo.cutout}
                 variant="statushd"
                 className="absolute top-[10%] left-[4%] hidden w-[44%] max-w-[220px] -rotate-[5deg] sm:block"
               />
               <Phone
-                src={screenshots.statushdOptimize.src}
-                alt={screenshots.statushdOptimize.alt}
+                src={screenshots.statushdPhoto.src}
+                alt={screenshots.statushdPhoto.alt}
                 variant="statushd"
                 className="relative w-[64%] max-w-[280px] animate-float sm:ml-[24%] sm:w-[54%]"
               />

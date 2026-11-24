@@ -1,16 +1,11 @@
-import { SiteFooter } from "@/components/SiteFooter";
-import { SiteHeader } from "@/components/SiteHeader";
-import { About, Principles } from "@/components/sections/About";
-import { FinalCta, WorkWithUs } from "@/components/sections/Contact";
+import { PageShell } from "@/components/PageShell";
+import { AboutTeaser } from "@/components/sections/About";
 import { Hero } from "@/components/sections/Hero";
-import { Launchpad } from "@/components/sections/Launchpad";
 import { Numbers } from "@/components/sections/Numbers";
 import { Products } from "@/components/sections/Products";
-import { Reach } from "@/components/sections/Reach";
 import { StatusHDSpotlight } from "@/components/sections/StatusHDSpotlight";
 import { StitchSpotlight } from "@/components/sections/StitchSpotlight";
-import { Team } from "@/components/sections/Team";
-import { site, products, team } from "@/content";
+import { productList, site, team } from "@/content";
 
 // Structured data so search engines understand the company and its apps.
 const jsonLd = {
@@ -25,7 +20,7 @@ const jsonLd = {
       address: { "@type": "PostalAddress", addressLocality: "Lagos", addressCountry: "NG" },
       founder: team.founders.map((f) => ({ "@type": "Person", name: f.name, jobTitle: f.role })),
     },
-    ...Object.values(products).map((p) => ({
+    ...productList.map((p) => ({
       "@type": "SoftwareApplication",
       name: p.name,
       url: p.siteUrl,
@@ -39,24 +34,14 @@ const jsonLd = {
 
 export default function HomePage() {
   return (
-    <>
-      <SiteHeader />
-      <main id="main">
-        <Hero />
-        <Numbers />
-        <Products />
-        <StatusHDSpotlight />
-        <StitchSpotlight />
-        <About />
-        <Principles />
-        <Reach />
-        <Team />
-        <Launchpad />
-        <WorkWithUs />
-        <FinalCta />
-      </main>
-      <SiteFooter />
+    <PageShell>
+      <Hero />
+      <Numbers />
+      <Products />
+      <StatusHDSpotlight />
+      <StitchSpotlight />
+      <AboutTeaser index="05" />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-    </>
+    </PageShell>
   );
 }

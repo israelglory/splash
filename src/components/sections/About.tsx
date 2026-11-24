@@ -1,14 +1,14 @@
-import { about, principles } from "@/content";
-import { principleIcons } from "../ui/Icons";
-import { Container, H2, Section, SectionLabel } from "../ui/primitives";
+import { about, aboutTeaser, principles } from "@/content";
+import { ArrowRight, principleIcons } from "../ui/Icons";
+import { Container, H2, Section, SectionLabel, type SectionProps } from "../ui/primitives";
 
-export function About() {
+export function About({ index, asPage }: SectionProps) {
   return (
     <Section id="about" theme="light" labelledBy="about-heading">
-      <Container className="py-24 lg:py-32">
-        <SectionLabel index="05">Why we exist</SectionLabel>
+      <Container className={asPage ? "pt-16 pb-24 lg:pt-24 lg:pb-32" : "py-24 lg:py-32"}>
+        <SectionLabel index={index}>Why we exist</SectionLabel>
         <div className="mt-6 grid gap-10 lg:grid-cols-12 lg:gap-8">
-          <H2 id="about-heading" className="lg:col-span-6">
+          <H2 id="about-heading" level={asPage ? 1 : 2} className="lg:col-span-6">
             {about.heading}
           </H2>
           <div className="space-y-5 text-[1.1875rem] leading-relaxed text-soft lg:col-span-5 lg:col-start-8 lg:pt-3" data-reveal>
@@ -39,11 +39,11 @@ export function About() {
   );
 }
 
-export function Principles() {
+export function Principles({ index }: SectionProps) {
   return (
     <Section id="principles" theme="dark" labelledBy="principles-heading">
       <Container className="py-24 lg:py-32">
-        <SectionLabel index="06">Principles</SectionLabel>
+        <SectionLabel index={index}>Principles</SectionLabel>
         <H2 id="principles-heading" className="mt-6">
           {principles.heading}
         </H2>
@@ -66,6 +66,32 @@ export function Principles() {
             );
           })}
         </ul>
+      </Container>
+    </Section>
+  );
+}
+
+/** Short "why we exist" block for the homepage, linking to the full About page. */
+export function AboutTeaser({ index }: SectionProps) {
+  return (
+    <Section id="why" theme="light" labelledBy="why-heading">
+      <Container className="py-24 lg:py-32">
+        <SectionLabel index={index}>Why we exist</SectionLabel>
+        <div className="mt-6 grid gap-10 lg:grid-cols-12 lg:items-end lg:gap-8">
+          <H2 id="why-heading" className="lg:col-span-7">
+            {aboutTeaser.heading}
+          </H2>
+          <div className="lg:col-span-4 lg:col-start-9" data-reveal>
+            <p className="text-[1.1875rem] leading-relaxed text-soft">{aboutTeaser.body}</p>
+            <a
+              href={aboutTeaser.link.href}
+              className="group mt-6 inline-flex items-center gap-2 font-semibold text-accent"
+            >
+              {aboutTeaser.link.label}
+              <ArrowRight size={18} className="transition-transform group-hover:translate-x-0.5" />
+            </a>
+          </div>
+        </div>
       </Container>
     </Section>
   );

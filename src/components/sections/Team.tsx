@@ -1,13 +1,13 @@
 import { team } from "@/content";
 import { LinkedInLogo } from "../ui/Icons";
-import { Container, external, H2, Section, SectionLabel } from "../ui/primitives";
+import { Container, external, H2, Section, SectionLabel, type SectionProps } from "../ui/primitives";
 import { SmartImage } from "../ui/SmartImage";
 
-export function Team() {
+export function Team({ index }: SectionProps) {
   return (
     <Section id="team" theme="dark" labelledBy="team-heading">
       <Container className="py-24 lg:py-32">
-        <SectionLabel index="08">Team</SectionLabel>
+        <SectionLabel index={index}>Team</SectionLabel>
         <H2 id="team-heading" className="mt-6">
           {team.heading}
         </H2>

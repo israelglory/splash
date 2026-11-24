@@ -43,7 +43,10 @@ export function SiteFooter() {
         </div>
 
         <div className="mt-16 flex flex-col-reverse gap-6 border-t border-line pt-8 sm:flex-row sm:items-center sm:justify-between">
-          <p className="text-sm text-soft">{site.copyright}</p>
+          <div className="space-y-1 text-sm text-soft">
+            <p>{site.copyright}</p>
+            <p>{site.registration}</p>
+          </div>
           <ul className="flex gap-2" aria-label="Social media">
             {socials.map((s) => {
               const Icon = socialIcons[s.id];

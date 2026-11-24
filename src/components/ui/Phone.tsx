@@ -14,6 +14,7 @@ export function Phone({
   variant,
   className = "",
   priority,
+  cutout = true,
   children,
 }: {
   src: string;
@@ -21,6 +22,8 @@ export function Phone({
   variant: Variant;
   className?: string;
   priority?: boolean;
+  /** Draw the iPhone camera cutout. Turn off for Android screenshots. */
+  cutout?: boolean;
   /** Overlays drawn on top of the screen (toasts, highlights). */
   children?: ReactNode;
 }) {
@@ -37,7 +40,9 @@ export function Phone({
             className="absolute inset-0 h-full w-full"
             fallback={<ScreenPlaceholder variant={variant} />}
           />
-          <span className="phone-island absolute left-1/2 z-10 -translate-x-1/2 rounded-full bg-[#070e11]" aria-hidden="true" />
+          {cutout && (
+            <span className="phone-island absolute left-1/2 z-10 -translate-x-1/2 rounded-full bg-[#070e11]" aria-hidden="true" />
+          )}
           {children}
         </div>
       </div>

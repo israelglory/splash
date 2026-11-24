@@ -1,4 +1,4 @@
-import { products, productsSection, socials, type Product } from "@/content";
+import { productList, productsSection, socials, type Product } from "@/content";
 import { AppIcon } from "../ui/AppIcon";
 import { ArrowUpRight, socialIcons } from "../ui/Icons";
 import { Badge, Container, external, H2, Section, SectionLabel } from "../ui/primitives";
@@ -20,9 +20,10 @@ export function Products() {
           </p>
         </div>
 
-        <div className="mt-14 grid gap-5 md:grid-cols-2">
-          <ProductCard product={products.statushd} />
-          <ProductCard product={products.stitch} delay={90} />
+        <div className={`mt-14 grid gap-5 md:grid-cols-2 ${productList.length > 2 ? "xl:grid-cols-3" : ""}`}>
+          {productList.map((p, i) => (
+            <ProductCard key={p.id} product={p} delay={i * 90} />
+          ))}
         </div>
 
         <div

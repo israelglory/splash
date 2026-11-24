@@ -1,25 +1,26 @@
 import { launchpad } from "@/content";
 import { EmailCapture } from "../EmailCapture";
 import { Check } from "../ui/Icons";
-import { Badge, Container, Section, SectionLabel } from "../ui/primitives";
+import { Badge, Container, Section, SectionLabel, type SectionProps } from "../ui/primitives";
 
-export function Launchpad() {
+export function Launchpad({ index, asPage }: SectionProps) {
+  const Heading = asPage ? "h1" : "h2";
   return (
     <Section id="launchpad" theme="light" labelledBy="launchpad-heading">
-      <Container className="py-24 lg:py-32">
-        <SectionLabel index="09">Giving back</SectionLabel>
+      <Container className={asPage ? "pt-16 pb-24 lg:pt-24 lg:pb-32" : "py-24 lg:py-32"}>
+        <SectionLabel index={index}>Giving back</SectionLabel>
         <div className="mt-6 grid gap-12 lg:grid-cols-12 lg:gap-8">
           <div className="lg:col-span-7">
             <div data-reveal>
               <Badge tone="accent">{launchpad.badge}</Badge>
             </div>
-            <h2
+            <Heading
               id="launchpad-heading"
-              data-reveal
+              data-reveal={asPage ? undefined : true}
               className="mt-6 text-[clamp(2.125rem,1.3rem+3vw,3.75rem)] leading-[1.03] font-bold tracking-[-0.035em]"
             >
               {launchpad.heading}
-            </h2>
+            </Heading>
             <div className="mt-6 max-w-xl space-y-4 text-lg text-soft" data-reveal>
               {launchpad.body.map((para) => (
                 <p key={para}>{para}</p>

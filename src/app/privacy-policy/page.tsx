@@ -45,8 +45,7 @@ export default function PrivacyPolicyPage() {
 
       <h2>Contact</h2>
       <p>
-        Questions about this policy can be sent to <a href={mailto("Privacy question")}>{site.email}</a>. {site.name},{" "}
-        {site.location}.
+        Questions about this policy can be sent to <a href={mailto("Privacy question")}>{site.email}</a>. {site.name}, {site.registeredAddress}. {site.registration}
       </p>
     </LegalPage>
   );

@@ -1,14 +1,14 @@
-import { finalCta, mailto, products, site, workWithUs } from "@/content";
+import { finalCta, mailto, productList, site, workWithUs } from "@/content";
 import { ArrowRight, Mail } from "../ui/Icons";
-import { ButtonLink, Container, external, H2, Section, SectionLabel } from "../ui/primitives";
+import { ButtonLink, Container, external, H2, Section, SectionLabel, type SectionProps } from "../ui/primitives";
 
-export function WorkWithUs() {
+export function WorkWithUs({ index, asPage }: SectionProps) {
   return (
     <Section id="contact" theme="dark" labelledBy="contact-heading">
-      <Container className="py-24 lg:py-32">
-        <SectionLabel index="10">Contact</SectionLabel>
+      <Container className={asPage ? "pt-16 pb-24 lg:pt-24 lg:pb-32" : "py-24 lg:py-32"}>
+        <SectionLabel index={index}>Contact</SectionLabel>
         <div className="mt-6 grid gap-6 lg:grid-cols-12 lg:items-end lg:gap-8">
-          <H2 id="contact-heading" className="lg:col-span-7">
+          <H2 id="contact-heading" level={asPage ? 1 : 2} className="lg:col-span-7">
             {workWithUs.heading}
           </H2>
           <div className="lg:col-span-4 lg:col-start-9" data-reveal>
@@ -60,9 +60,9 @@ export function FinalCta() {
           {finalCta.heading}
         </h2>
         <div className="flex shrink-0 flex-wrap gap-3 lg:pb-3" data-reveal>
-          {finalCta.buttons.map((b) => (
-            <ButtonLink key={b.product} href={products[b.product].siteUrl} {...external} arrow className="!min-h-14 !px-7 !text-[1.0625rem]">
-              {b.label}
+          {productList.map((p) => (
+            <ButtonLink key={p.id} href={p.siteUrl} {...external} arrow className="!min-h-14 !px-7 !text-[1.0625rem]">
+              {finalCta.buttonPrefix} {p.name}
             </ButtonLink>
           ))}
         </div>

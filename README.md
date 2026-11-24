@@ -1,6 +1,16 @@
 # Splash Software Technologies website
 
-The company website for Splash Software Technologies: one landing page plus `/privacy-policy/` and `/terms/`.
+The company website for Splash Software Technologies.
+
+| Page | What's on it |
+| --- | --- |
+| `/` | Hero, numbers, product cards, the StatusHD and Stitch spotlights, a short "why we exist" |
+| `/about/` | Why we exist, how we build, where our apps are used, the team |
+| `/launchpad/` | Splash Launchpad and the "register your interest" form |
+| `/contact/` | Investors, partners and press contacts |
+| `/privacy-policy/`, `/terms/` | Legal pages (placeholder text) |
+
+Every page except the legal ones ends with the "Try what we're building" band.
 
 Built with Next.js 16 (App Router), TypeScript and Tailwind CSS 4, exported as a fully static site. There is no server to run in production.
 
@@ -55,20 +65,33 @@ Search the file for `TODO` to find every link that still needs a real value.
 
 Copy rules for this site: no em dashes, never the word "small" or the phrase "simple app", and only facts the company has confirmed.
 
+### Adding a product
+
+Products are listed once in `src/content.ts` and the rest of the site follows:
+
+1. Add the app to `products`, with its icon, one-line promise, tagline, site and store links.
+2. Add it to `productList` in the order it should appear.
+
+It then shows up in the Products dropdown (desktop and mobile), the product cards on the homepage, the footer and the final call to action. The menu links to the app's own website, unless you give it an `href` pointing to a homepage section (StatusHD and Stitch use `/#statushd` and `/#stitch` for their spotlights). Spotlight sections are written per product, so a new app can launch with just a card and a menu entry, and get a spotlight later.
+
+### Page titles and descriptions
+
+`pages` in `src/content.ts` holds the title and search description for About, Launchpad and Contact. The homepage uses `site.title` and `site.description`. When you add a page, add it to `src/app/sitemap.ts` too.
+
 ### Images: `public/images/`
 
-Drop files in with exactly these names. Until a file exists, the site shows a neutral placeholder at the same size, never a broken image.
+The app images come from the StatusHD and Stitch marketing sites (`statushdWeb` and `stitchweb`), cropped and compressed for this site. Paths and alt text live in `src/content.ts` (`products` and `screenshots`). If a file goes missing, the site shows a neutral placeholder at the same size, never a broken image.
 
-| File | Used for | Recommended size |
+| File | Used for | Size |
 | --- | --- | --- |
-| `statushd-icon.png`, `stitch-icon.png` | App icons | 256 x 256, square (the site rounds the corners) |
-| `statushd-home.png`, `statushd-optimize.png` | StatusHD phone screens | 1179 x 2556 (9:19.5) |
-| `stitch-ai-edit.png`, `stitch-captions.png`, `stitch-keyframes.png` | Stitch phone screens | 1179 x 2556 (9:19.5) |
-| `before-blur.jpg`, `after-hd.jpg` | Before and after slider | 1600 x 1200 (4:3), same framing in both |
-| `glory-olaifa.jpg`, `boluwatife-olaifa.jpg` | Founder headshots | 800 x 1000 (4:5), face in the upper third |
+| `statushd-icon.jpg`, `stitch-icon.png` | App icons | 256 x 256, square (the site rounds the corners) |
+| `statushd-optimize-video.jpg`, `statushd-optimize-photo.jpg` | StatusHD phone screens | 720 px wide |
+| `stitch-editor.jpg`, `stitch-captions.jpg`, `stitch-export.jpg` | Stitch phone screens | 720 px wide |
+| `before-blur.jpg`, `after-hd.jpg` | Before and after slider | 1024 x 768 (4:3), same framing in both |
+| `glory-olaifa.jpg`, `boluwatife-olaifa.jpg` | Founder headshots (not supplied yet) | 800 x 1000 (4:5), face in the upper third |
 | `og-image.png` | Social share card | 1200 x 630 |
 
-Screenshots use the full screen area; the site draws the phone frame and the camera cutout itself.
+To swap a screenshot, export the full screen (no device frame) at about 720 px wide; the site draws the phone frame itself. For an Android screenshot, set `cutout: false` on its entry in `screenshots` so no iPhone camera cutout is drawn over it.
 
 `og-image.png` is currently a branded stand-in generated for launch. Replace it with the final artwork when it is ready.
 
@@ -93,10 +116,13 @@ src/
   content.ts                 all copy, numbers and links
   app/
     layout.tsx               fonts, metadata, analytics placeholder
-    page.tsx                 the landing page (section order)
+    page.tsx                 homepage (section order)
+    about/, launchpad/, contact/
     privacy-policy/, terms/  legal pages
     sitemap.ts, robots.ts    generated at build time
   components/
+    PageShell.tsx            header + page + final call to action + footer
+    SiteHeader.tsx           navigation, Products dropdown, mobile menu
     sections/                one file per page section
     ui/                      buttons, phone mockup, store buttons, icons
     BeforeAfter.tsx          StatusHD comparison slider
@@ -105,6 +131,7 @@ src/
     EmailCapture.tsx         Launchpad form
   data/world-map.ts          generated dot map (see below)
   lib/subscribe.ts           email provider placeholder
+  lib/metadata.ts            per-page titles and share cards
 scripts/generate-world-map.mjs
 ```
 
@@ -114,7 +141,8 @@ The dotted map in "Made in Lagos" is pre-generated from Natural Earth data. To c
 
 ## Accessibility and motion
 
-- Semantic landmarks, a skip link, a labelled navigation and a keyboard-operable mobile menu (Escape closes it).
+- Semantic landmarks, a skip link, one `h1` per page and the current page marked in the navigation.
+- The Products dropdown opens on click, hover or the down arrow key, and closes with Escape, a click outside or tabbing away. The mobile menu closes with Escape.
 - Visible focus rings in every section color.
 - Body text contrast is at least 5.7:1 throughout.
 - The before and after slider is a native range input, so arrow keys work.
